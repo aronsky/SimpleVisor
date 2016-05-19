@@ -208,13 +208,18 @@ ShvVpAllocateGlobalData (
     // Allocate a contiguous chunk of RAM to back this allocation and make sure
     // that it is RW only, instead of RWX, by using the new Windows 8 API.
     //
-    data = (PSHV_GLOBAL_DATA)MmAllocateContiguousNodeMemory(size,
-                                                            lowest,
-                                                            highest,
-                                                            lowest,
-                                                            PAGE_READWRITE,
-                                                            MM_ANY_NODE_OK);
-    if (data != NULL)
+#if TARGETVERSION > 7
+	data = (PSHV_GLOBAL_DATA)MmAllocateContiguousNodeMemory(size,
+		lowest,
+		highest,
+		lowest,
+		PAGE_READWRITE,
+		MM_ANY_NODE_OK);
+#else
+	data = (PSHV_GLOBAL_DATA)MmAllocateContiguousMemory(size, highest);
+#endif // TARGETVERSION > 7
+
+	if (data != NULL)
     {
         //
         // Zero out the entire data region

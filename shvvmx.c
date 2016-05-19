@@ -338,6 +338,7 @@ ShvVmxProbe (
         return FALSE;
     }
 
+#ifndef VMWARE_COMPAT_MODE
     //
     // Check if the Feature Control MSR is locked. If it isn't, this means that
     // BIOS/UEFI firmware screwed up, and we could go around locking it, but
@@ -357,6 +358,9 @@ ShvVmxProbe (
     {
         return FALSE;
     }
+#else
+	UNREFERENCED_PARAMETER(featureControl);
+#endif
 
     //
     // Both the hardware and the firmware are allowing us to enter VMX mode.

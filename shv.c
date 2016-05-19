@@ -76,10 +76,12 @@ ShvInitialize (
     // which point entering VMX root mode will fail (unless a shadows VMCS is
     // used).
     //
+#ifndef VMWARE_COMPAT_MODE
     if (HviIsAnyHypervisorPresent())
     {
         return STATUS_HV_OBJECT_IN_USE;
     }
+#endif
 
     //
     // Next, detect if the hardware appears to support VMX root mode to start.
