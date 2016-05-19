@@ -131,6 +131,20 @@ ShvVmxHandleXsetbv (
 }
 
 VOID
+ShvVmxHandleVmCall(
+	_In_ PSHV_VP_STATE VpState
+)
+{
+	//
+	// Dummy handler, just says that VMCALL has been executed
+	//
+
+	UNREFERENCED_PARAMETER(VpState);
+
+	DbgPrintEx(77, 0, "VMCALL in vCPU %d\n", KeGetCurrentProcessorNumberEx(NULL));
+}
+
+VOID
 ShvVmxHandleVmx (
     _In_ PSHV_VP_STATE VpState
     )
@@ -170,6 +184,7 @@ ShvVmxHandleExit (
         ShvVmxHandleXsetbv(VpState);
         break;
     case EXIT_REASON_VMCALL:
+		ShvVmxHandleVmCall(VpState);
     case EXIT_REASON_VMCLEAR:
     case EXIT_REASON_VMLAUNCH:
     case EXIT_REASON_VMPTRLD:
